@@ -1,5 +1,3 @@
-import sys
-sys.path.insert(0, '../../')
 from linereader import read_file
 
 grid = [x for x in read_file('input.txt')]

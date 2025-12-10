@@ -1,1 +1,10 @@
 venv
+
+# Python bytecode cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python compiled files
+*.pyc
+*.pyo
