@@ -8,31 +8,30 @@ W = len(grid[0])
 start_row = 0
 start_col = grid[0].index('S')
 
-queue = [(start_row, start_col)]
-visited = set()
-splits = 0
+ways = [[0]*W for _ in range(H)]
+ways[start_row][start_col] = 1
 
-while queue:
-    r, c = queue.pop(0)
+ways = [[0]*W for _ in range(H)]
+ways[start_row][start_col] = 1
 
-    if (r, c) in visited:
-        continue
-    visited.add((r, c))
+for r in range(H):
+    for c in range(W):
+        if ways[r][c] == 0:
+            continue
 
-    cell = grid[r][c]
+        cell = grid[r][c]
 
-    if cell == '^':
-        splits += 1
+        if cell in ('.', 'S'):
+            if r+1 < H:
+                ways[r+1][c] += ways[r][c]
 
-        if c - 1 >= 0:
-            queue.append((r, c - 1))
-        if c + 1 < W:
-            queue.append((r, c + 1))
-        
-        # Do not continue downwards from a split
-        continue
-    
-    if r + 1 < H:
-        queue.append((r + 1, c))  # down
+        elif cell == '^':
+            if r+1 < H:
+                if c-1 >= 0:
+                    ways[r+1][c-1] += ways[r][c]
+                if c+1 < W:
+                    ways[r+1][c+1] += ways[r][c]
 
-print(splits)
+total_timelines = sum(ways[-1])
+print(total_timelines)
+

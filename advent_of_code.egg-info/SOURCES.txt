@@ -9,6 +9,9 @@ advent_of_code.egg-info/top_level.txt
 common/__init__.py
 common/day.py
 common/meta.py
+lib/__init__.py
+lib/point2d.py
+lib/point3d.py
 year2019/__init__.py
 year2019/computer.py
 year2019/metadata.py
@@ -53,3 +56,4 @@ year2022/1/a.py
 year2022/2/a.py
 year2022/2/b.py
 year2022/3/a.py
+year2025/metadata.py

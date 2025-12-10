@@ -16,6 +16,6 @@ py-modules = ["linereader", "readme_generator"]
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["common", "year2019", "year2021", "year2022"]
+include = ["common", "lib", "year2019", "year2021", "year2022", "year2025"]
 exclude = ["tmp*"]
 
