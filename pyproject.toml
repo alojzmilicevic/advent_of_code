@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "advent-of-code"
+version = "0.1.0"
+description = "Advent of Code solutions"
+requires-python = ">=3.8"
+authors = [
+    {name = "Alojz Milicevic"}
+]
+
+[tool.setuptools]
+py-modules = ["linereader", "readme_generator"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["common", "year2019", "year2021", "year2022"]
+exclude = ["tmp*"]
+

@@ -1,25 +1,39 @@
-def read_file(file_name):
-    f = open(file_name, "r")
-    arr = []
-    for line in f:
-        arr.append(line.replace('\n', ''))
+import os
+from pathlib import Path
+import inspect
 
-    return arr
+
+def read_file(file_name):
+    # If relative path, make it relative to the caller's script
+    if not os.path.isabs(file_name):
+        caller_frame = inspect.stack()[1]
+        caller_path = Path(caller_frame.filename).parent
+        file_name = caller_path / file_name
+    
+    with open(file_name, "r") as f:
+        return [line.replace('\n', '') for line in f]
 
 
 def read_lines(file_name, token):
-    f = open(file_name, 'r')
-
-    arr = []
-
-    for line in f:
-        arr.append(line.replace('\n', '').split(token))
-
-    return arr
+    # If relative path, make it relative to the caller's script
+    if not os.path.isabs(file_name):
+        caller_frame = inspect.stack()[1]
+        caller_path = Path(caller_frame.filename).parent
+        file_name = caller_path / file_name
+    
+    with open(file_name, 'r') as f:
+        return [line.replace('\n', '').split(token) for line in f]
 
 
 def read_line(file_name, token):
-    return open(file_name, 'r').readline().split(token)
+    # If relative path, make it relative to the caller's script
+    if not os.path.isabs(file_name):
+        caller_frame = inspect.stack()[1]
+        caller_path = Path(caller_frame.filename).parent
+        file_name = caller_path / file_name
+    
+    with open(file_name, 'r') as f:
+        return f.readline().split(token)
 
 
 def read_parts(file_name, delim, split_instructions):
