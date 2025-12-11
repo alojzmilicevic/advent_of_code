@@ -8,3 +8,6 @@ __pycache__/
 # Python compiled files
 *.pyc
 *.pyo
+
+# Advent of Code session cookie (keep private!)
+.aoc_session

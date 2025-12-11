@@ -11,8 +11,11 @@ authors = [
     {name = "Alojz Milicevic"}
 ]
 
+[project.scripts]
+aoc = "aoc:main"
+
 [tool.setuptools]
-py-modules = ["linereader", "readme_generator"]
+py-modules = ["linereader", "readme_generator", "aoc"]
 
 [tool.setuptools.packages.find]
 where = ["."]

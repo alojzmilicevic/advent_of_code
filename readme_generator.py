@@ -6,11 +6,6 @@ def write_table_row(first: str, second: str, third: str, f):
     f.write('|' + first + '|' + second + '|' + third + '|\n')
 
 
-year_folders = glob("*/")
-years = sorted(
-    [int(y.split('year')[1]) for y in list(filter(lambda d: 'year' in d, [x.strip('..\\') for x in year_folders]))])
-
-
 def create_url(idx, day, y):
     url = 'https://adventofcode.com/'
     return "[{day}]({url}{year}/day/{index}) {emoji}" \
@@ -24,33 +19,48 @@ def get_files(day, y):
     return a
 
 
-for year in years:
-    f = open('./year{year}/README.md'.format(year=year), 'w', encoding="utf-8")
+def main():
+    """Generate README files for all years."""
+    year_folders = glob("*/")
+    years = sorted(
+        [int(y.split('year')[1]) for y in list(filter(lambda d: 'year' in d, [x.strip('..\\') for x in year_folders]))])
+    
+    print(f"Generating README files for years: {years}")
+    
+    for year in years:
+        f = open('./year{year}/README.md'.format(year=year), 'w', encoding="utf-8")
 
-    # File header
-    f.write('# 🎄 🎅 Advent of code {year} 🎅 🎄\n'.format(year=year))
-    f.write('My Advent of Code (Season {year}) solutions written in Python 😀\n\n'.format(year=year))
+        # File header
+        f.write('# 🎄 🎅 Advent of code {year} 🎅 🎄\n'.format(year=year))
+        f.write('My Advent of Code (Season {year}) solutions written in Python 😀\n\n'.format(year=year))
 
-    # Table Header
-    write_table_row('#', 'Problem ☃', 'Solution ❄', f)
-    write_table_row('---', '-------------', ':-------------:', f)
+        # Table Header
+        write_table_row('#', 'Problem ☃', 'Solution ❄', f)
+        write_table_row('---', '-------------', ':-------------:', f)
 
-    directories = glob("*year{year}/*/".format(year=year))
-    directories = sorted(
-        [int(y) for y in [x.replace('year' + str(year) + '\\', '').strip('\\') for x in directories] if y.isnumeric()])
+        directories = glob("*year{year}/*/".format(year=year))
+        directories = sorted(
+            [int(y) for y in [x.replace('year' + str(year) + '\\', '').strip('\\') for x in directories] if y.isnumeric()])
 
-    for day_idx in directories:
-        day_str = str(day_idx)
-        files = get_files(day_str, year)
+        for day_idx in directories:
+            day_str = str(day_idx)
+            files = get_files(day_str, year)
 
-        file_links = ""
-        if len(files) == 1:
-            file_links = "[Part 1 & 2]({file})".format(file=files[0])
-        if len(files) == 2:
-            for i, file in enumerate(files):
-                if i > 0:
-                    file_links += " - "
-                file_links += "[Part {p}]({file})".format(file=files[i], p=i + 1)
-        write_table_row(day_str, create_url(day_str, get_metadata(year)[day_idx], year), file_links, f)
+            file_links = ""
+            if len(files) == 1:
+                file_links = "[Part 1 & 2]({file})".format(file=files[0])
+            if len(files) == 2:
+                for i, file in enumerate(files):
+                    if i > 0:
+                        file_links += " - "
+                    file_links += "[Part {p}]({file})".format(file=files[i], p=i + 1)
+            write_table_row(day_str, create_url(day_str, get_metadata(year)[day_idx], year), file_links, f)
 
-    f.close()
+        f.close()
+        print(f"  Generated year{year}/README.md")
+    
+    print("\nREADME generation complete!")
+
+
+if __name__ == '__main__':
+    main()

@@ -1,12 +1,15 @@
 README.md
+aoc.py
 linereader.py
 pyproject.toml
 readme_generator.py
 advent_of_code.egg-info/PKG-INFO
 advent_of_code.egg-info/SOURCES.txt
 advent_of_code.egg-info/dependency_links.txt
+advent_of_code.egg-info/entry_points.txt
 advent_of_code.egg-info/top_level.txt
 common/__init__.py
+common/create_next_day.py
 common/day.py
 common/meta.py
 lib/__init__.py
