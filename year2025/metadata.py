@@ -13,6 +13,8 @@ def get_metadata():
         8: Day('Playground', '🎮'),
         9: Day('Movie Theater', '🎬'),
         10: Day('Factory', '🏭'),
+        11: Day('Reactor', '🔥'),
+        12: Day('*NOT OUT YET*', '❓'),
     }
 
     return days
