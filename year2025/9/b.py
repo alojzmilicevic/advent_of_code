@@ -1,79 +1,92 @@
 from linereader import read_file
 from lib.point2d import Point2D
-from common.grid_printer import print_colored_grid, Colors
-
-points = [Point2D(*map(int, x.split(','))) for x in read_file('test.input.txt')]
-
-x_min = min(points, key=lambda x: x.x).x
-x_max = max(points, key=lambda x: x.x).x
-
-y_min = min(points, key=lambda x: x.y).y
-y_max = max(points, key=lambda x: x.y).y
-
-# init grid
-grid = [[0 for _ in range(x_max + 2)] for _ in range(y_max + 2)]
-
-def make_grid():
-# mark the points in the grid
-    for pIdx in range(len(points)):
-        point = points[pIdx]
-        grid[point.y][point.x] = 1
-
-        next_point = None
-        if pIdx < len(points) - 1:
-            next_point = points[pIdx + 1]
-        elif pIdx == len(points) - 1:
-            next_point = points[0]
 
 
-        if next_point.y == point.y:
-            #traverse x
-            min_x = min(point.x, next_point.x)
-            max_x = max(point.x, next_point.x)
-            for x in range(min_x + 1, max_x):
-                grid[point.y][x] = 2
-        elif next_point.x == point.x:
-            #traverse y
-            min_y = min(point.y, next_point.y)
-            max_y = max(point.y, next_point.y)
-            for y in range(min_y + 1, max_y):
-                grid[y][point.x] = 2
-                
-make_grid()
+# -------------------------
+# Point in polygon
+# -------------------------
 
-def point_in_polygon(px, py, polygon):
+def point_on_segment(px, py, x1, y1, x2, y2):
+    if not (min(x1, x2) <= px <= max(x1, x2) and min(y1, y2) <= py <= max(y1, y2)):
+        return False
+    return abs((py - y1) * (x2 - x1) - (px - x1) * (y2 - y1)) < 1e-9
+
+
+def point_in_polygon(px, py, poly):
+    # boundary
+    for i in range(len(poly)):
+        x1, y1 = poly[i].x, poly[i].y
+        x2, y2 = poly[(i + 1) % len(poly)].x, poly[(i + 1) % len(poly)].y
+        if point_on_segment(px, py, x1, y1, x2, y2):
+            return True
+
     inside = False
-    p1 = polygon[0]
-    
-    for i in range(1, len(polygon) + 1):
-        p2 = polygon[i % len(polygon)]
-        
-        # Skip horizontal edges (don't cross horizontal ray)
-        if p1.y == p2.y:
-            p1 = p2
-            continue
-            
-        # Check if edge crosses the ray
-        if py > min(p1.y, p2.y) and py <= max(p1.y, p2.y):
-            if px <= max(p1.x, p2.x):
-                x_intersection = (py - p1.y) * (p2.x - p1.x) / (p2.y - p1.y) + p1.x
-                if p1.x == p2.x or px <= x_intersection:
-                    inside = not inside
-        
-        p1 = p2
-    
+    j = len(poly) - 1
+    for i in range(len(poly)):
+        xi, yi = poly[i].x, poly[i].y
+        xj, yj = poly[j].x, poly[j].y
+        if ((yi > py) != (yj > py)) and \
+                (px < (xj - xi) * (py - yi) / (yj - yi) + xi):
+            inside = not inside
+        j = i
     return inside
 
-for y in range(y_max + 2):
-    for x in range(x_max + 2):
-        if grid[y][x] == 1 or grid[y][x] == 2:
-            continue
-        
-        if point_in_polygon(x, y, points):
-            grid[y][x] = 2
 
-print_colored_grid(grid, {
-    0: Colors.BLACK,
-    1: Colors.RED,
-    2: Colors.GREEN
-})
+# -------------------------
+# Largest rectangle in a binary matrix (DP)
+# -------------------------
+
+def histogram_largest_rectangle(heights):
+    """Classic stack-based largest rectangle in histogram."""
+    stack = []
+    max_area = 0
+    heights.append(0)
+
+    for i, h in enumerate(heights):
+        while stack and heights[stack[-1]] > h:
+            height = heights[stack.pop()]
+            left = stack[-1] + 1 if stack else 0
+            area = height * (i - left)
+            max_area = max(max_area, area)
+        stack.append(i)
+
+    heights.pop()
+    return max_area
+
+
+# -------------------------
+# Main computation
+# -------------------------
+
+points = [Point2D(*map(int, x.split(','))) for x in read_file("input.txt")]
+
+# bounding box
+xs = [p.x for p in points]
+ys = [p.y for p in points]
+xmin, xmax = min(xs), max(xs)
+ymin, ymax = min(ys), max(ys)
+
+W = xmax - xmin + 1
+H = ymax - ymin + 1
+
+# 1 = inside polygon, 0 = outside
+grid = [[0] * W for _ in range(H)]
+
+for y in range(H):
+    py = ymin + y
+    for x in range(W):
+        px = xmin + x
+        if point_in_polygon(px, py, points):
+            grid[y][x] = 1
+
+
+# Apply DP histogram method row by row
+heights = [0] * W
+best_area = 0
+
+for row in grid:
+    for j in range(W):
+        heights[j] = heights[j] + 1 if row[j] == 1 else 0
+    best_area = max(best_area, histogram_largest_rectangle(heights))
+
+print(best_area)
