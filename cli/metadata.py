@@ -132,6 +132,7 @@ def fetch_puzzle_title(year, day, session=None):
     Returns:
         str: The puzzle title, or None if not found
     """
+    import html
     url = f"https://adventofcode.com/{year}/day/{day}"
     
     try:
@@ -142,12 +143,13 @@ def fetch_puzzle_title(year, day, session=None):
             req.add_header('Cookie', f'session={session}')
         
         with urllib.request.urlopen(req, timeout=10) as response:
-            html = response.read().decode('utf-8')
+            html_content = response.read().decode('utf-8')
             
             # Parse title from HTML: <h2>--- Day X: Title ---</h2>
-            match = re.search(r'<h2>--- Day \d+: (.+?) ---</h2>', html)
+            match = re.search(r'<h2>--- Day \d+: (.+?) ---</h2>', html_content)
             if match:
-                return match.group(1)
+                # Decode HTML entities like &apos; -> '
+                return html.unescape(match.group(1))
     except Exception as e:
         print(f"Warning: Could not fetch puzzle title: {e}")
     
