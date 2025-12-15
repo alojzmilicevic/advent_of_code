@@ -34,7 +34,7 @@ def print_colored_grid(grid, color_map=None, spacing=True):
         })
     """
     if color_map is None:
-        color_map = {}
+        color_map = {0: Colors.BLACK, 1: Colors.GREEN}
     
     separator = ' ' if spacing else ''
     
