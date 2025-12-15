@@ -1,0 +1,50 @@
+{
+  "1": {
+    "name": "Secret Entrance",
+    "emoji": "🚪"
+  },
+  "2": {
+    "name": "Gift Shop",
+    "emoji": "🎁"
+  },
+  "3": {
+    "name": "Lobby",
+    "emoji": "🏛️"
+  },
+  "4": {
+    "name": "Printing Department",
+    "emoji": "🖨️"
+  },
+  "5": {
+    "name": "Cafeteria",
+    "emoji": "🍽️"
+  },
+  "6": {
+    "name": "Trash Compactor",
+    "emoji": "🗑️"
+  },
+  "7": {
+    "name": "Laboratories",
+    "emoji": "🧪"
+  },
+  "8": {
+    "name": "Playground",
+    "emoji": "🎮"
+  },
+  "9": {
+    "name": "Movie Theater",
+    "emoji": "🎬"
+  },
+  "10": {
+    "name": "Factory",
+    "emoji": "🏭"
+  },
+  "11": {
+    "name": "Reactor",
+    "emoji": "🔥"
+  },
+  "12": {
+    "name": "Christmas Tree Farm",
+    "emoji": "🎄"
+  }
+}

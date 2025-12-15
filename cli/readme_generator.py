@@ -1,5 +1,5 @@
 from glob import glob
-from common.meta import get_metadata
+from cli.metadata import get_metadata
 
 
 def write_table_row(first: str, second: str, third: str, f):

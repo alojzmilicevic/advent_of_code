@@ -11,10 +11,10 @@ from pathlib import Path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
-from common.create_next_day import main as create_next_day
-from common.aoc_downloader import download_input, setup_session_cookie, get_session_cookie
-from common.create_next_day import find_latest_year, find_next_day, create_day_folder
-from readme_generator import main as generate_readme
+from cli.create_next_day import main as create_next_day
+from cli.aoc_downloader import download_input, setup_session_cookie, get_session_cookie
+from cli.create_next_day import find_latest_year, find_next_day, create_day_folder
+from cli.readme_generator import main as generate_readme
 
 
 def show_help():
