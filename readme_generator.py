@@ -13,7 +13,8 @@ def create_url(idx, day, y):
 
 
 def get_files(day, y):
-    raw_files = glob('year{year}/{day}/*.py'.format(day=day, year=y))
+    # Only include a.py and b.py, not helper files
+    raw_files = glob('year{year}/{day}/[ab].py'.format(day=day, year=y))
     a = [x.replace('year' + str(y), '').replace('\\', '/')[1:] for x in raw_files]
     print(a)
     return a
@@ -23,7 +24,7 @@ def main():
     """Generate README files for all years."""
     year_folders = glob("*/")
     years = sorted(
-        [int(y.split('year')[1]) for y in list(filter(lambda d: 'year' in d, [x.strip('..\\') for x in year_folders]))])
+        [int(y.rstrip('/\\').split('year')[1]) for y in year_folders if 'year' in y])
     
     print(f"Generating README files for years: {years}")
     
@@ -40,7 +41,7 @@ def main():
 
         directories = glob("*year{year}/*/".format(year=year))
         directories = sorted(
-            [int(y) for y in [x.replace('year' + str(year) + '\\', '').strip('\\') for x in directories] if y.isnumeric()])
+            [int(y) for y in [x.replace('year' + str(year), '').strip('/\\') for x in directories] if y.isnumeric()])
 
         for day_idx in directories:
             day_str = str(day_idx)

@@ -9,9 +9,12 @@ advent_of_code.egg-info/dependency_links.txt
 advent_of_code.egg-info/entry_points.txt
 advent_of_code.egg-info/top_level.txt
 common/__init__.py
+common/aoc_downloader.py
 common/create_next_day.py
 common/day.py
+common/grid_printer.py
 common/meta.py
+common/parsing.py
 lib/__init__.py
 lib/point2d.py
 lib/point3d.py
