@@ -6,7 +6,7 @@ height = 100
 width = 100
 
 
-d = [[int(y) for y in list(x)] for x in read_file('a.in.txt')]
+d = [[int(y) for y in list(x)] for x in read_file('input.txt')]
 
 
 def is_local_min(row, col, arr):

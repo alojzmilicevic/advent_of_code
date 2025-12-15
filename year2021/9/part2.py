@@ -1,6 +1,6 @@
 from linereader import read_file
 
-d = [[int(y) for y in list(x)] for x in read_file('9.in.txt')]
+d = [[int(y) for y in list(x)] for x in read_file('input.txt')]
 
 basins = []
 visited = []

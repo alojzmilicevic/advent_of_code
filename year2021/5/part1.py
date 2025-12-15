@@ -1,4 +1,4 @@
-with open("5.input.txt") as f:
+with open("input.txt") as f:
     lines = [x.strip().split(" -> ") for x in f.readlines()]
     lines = [[x.split(",") for x in p] for p in lines]
 

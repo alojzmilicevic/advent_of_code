@@ -1,4 +1,4 @@
-file = open('4.input.txt', 'r')
+file = open('input.txt', 'r')
 
 data = [int(x) for x in file.readline().split(',')]
 

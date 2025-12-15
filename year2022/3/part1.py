@@ -1,11 +1,7 @@
 from linereader import read_file
 from string import ascii_letters
 
-data = read_file('3.input.txt')
-
-
-
-
+data = read_file('input.txt')
 
 items = {}
 alphabet = list(ascii_letters)

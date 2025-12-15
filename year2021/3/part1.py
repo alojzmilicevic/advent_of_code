@@ -1,6 +1,6 @@
 from linereader import read_file
 
-data = read_file('3.input.txt')
+data = read_file('input.txt')
 
 arr = []
 for i in range(0, len(data)):

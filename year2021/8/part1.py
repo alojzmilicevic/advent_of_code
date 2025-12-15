@@ -19,7 +19,7 @@ numbersMap = {
     8: 7,
 }
 
-d = [x.split('| ')[1].split(' ') for x in read_file('8.input.txt')]
+d = [x.split('| ')[1].split(' ') for x in read_file('input.txt')]
 
 total = 0
 for line in d:

@@ -5,7 +5,7 @@ from datetime import timedelta
 from linereader import read_file
 import heapq
 
-d = [[int(y) for y in list(x)] for x in read_file('15.in.txt')]
+d = [[int(y) for y in list(x)] for x in read_file('input.txt')]
 
 
 def is_valid(x, y, height, width):

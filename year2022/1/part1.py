@@ -1,6 +1,6 @@
 from linereader import read_file
 
-data = [x for x in read_file('1.input.txt')]
+data = [x for x in read_file('input.txt')]
 
 elf_calories = []
 cur_cal = 0

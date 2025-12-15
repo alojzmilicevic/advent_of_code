@@ -1,6 +1,6 @@
 import linereader
 
-d = linereader.read_file("10.in.txt")
+d = linereader.read_file("input.txt")
 
 matching_pairs = {
     "{": "}",

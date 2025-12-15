@@ -1,6 +1,6 @@
 from linereader import read_file
 
-data = read_file('2.input.txt')
+data = read_file('input.txt')
 
 points = {
     'A': 1,

@@ -1,4 +1,4 @@
-with open('3.input.txt') as f:
+with open('input.txt') as f:
     data = [int(x, 2) for x in f]
     bits = max(x.bit_length() for x in data)
 

@@ -1,6 +1,6 @@
 from linereader import read_file
 
-d = [x for x in read_file('12.in.txt')]
+d = [x for x in read_file('input.txt')]
 
 
 def create_graph(lines):

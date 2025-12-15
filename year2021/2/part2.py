@@ -4,7 +4,7 @@ y = 0
 x = 0
 aim = 0
 
-data = read_file('2.input.txt')
+data = read_file('input.txt')
 
 for line in data:
     direction, delta = line.split(" ")

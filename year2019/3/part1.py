@@ -39,7 +39,7 @@ def path(wire):
     return wired, total
 
 
-with open('3.input.txt') as f:
+with open('input.txt') as f:
     wire_paths = [path.split(',') for path in f.read().split()]
 
 p1, num_steps_1 = path(wire_paths[0])

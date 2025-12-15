@@ -1,6 +1,6 @@
 from linereader import read_file
 
-data = [int(x) for x in read_file('1.input.txt')]
+data = [int(x) for x in read_file('input.txt')]
 
 total_fuel = 0
 
