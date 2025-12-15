@@ -1,0 +1,9 @@
+# Normalize line endings
+* text=auto
+
+# Python files
+*.py text eol=lf
+
+# Input files
+*.txt text eol=lf
+*.json text eol=lf

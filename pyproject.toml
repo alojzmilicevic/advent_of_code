@@ -12,13 +12,9 @@ authors = [
 ]
 
 [project.scripts]
-aoc = "aoc:main"
+aoc = "cli.aoc:main"
 
 [tool.setuptools]
-py-modules = ["linereader", "readme_generator", "aoc"]
-
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["common", "lib", "year2019", "year2021", "year2022", "year2025"]
-exclude = ["tmp*"]
+py-modules = ["linereader"]
+packages = ["cli", "common", "lib", "year2019", "year2021", "year2022", "year2025"]
 

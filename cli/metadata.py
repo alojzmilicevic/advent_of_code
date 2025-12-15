@@ -4,7 +4,6 @@ Handles fetching puzzle titles, emoji selection, and storing metadata.
 """
 import json
 import urllib.request
-import urllib.error
 import re
 from pathlib import Path
 
