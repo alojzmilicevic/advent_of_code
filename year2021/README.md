@@ -9,7 +9,7 @@ My Advent of Code (Season 2021) solutions written in Python 😀
 |4|[Giant Squid](https://adventofcode.com/2021/day/4) 🦑|[Part 1](4/a.py) - [Part 2](4/b.py)|
 |5|[Hydrothermal Venture](https://adventofcode.com/2021/day/5) 🔥|[Part 1](5/a.py) - [Part 2](5/b.py)|
 |6|[Lanternfish](https://adventofcode.com/2021/day/6) 🐠|[Part 1 & 2](6/a.py)|
-|7|[The Treachery of Whales](https://adventofcode.com/2021/day/7) 🐳|[Part 1](7/7.py) - [Part 2](7/b.py)|
+|7|[The Treachery of Whales](https://adventofcode.com/2021/day/7) 🐳|[Part 1 & 2](7/b.py)|
 |8|[Seven Segment Search](https://adventofcode.com/2021/day/8) 🔍|[Part 1](8/a.py) - [Part 2](8/b.py)|
 |9|[Smoke Basin](https://adventofcode.com/2021/day/9) 🌋|[Part 1](9/a.py) - [Part 2](9/b.py)|
 |10|[Syntax Scoring](https://adventofcode.com/2021/day/10) 📝|[Part 1 & 2](10/a.py)|
