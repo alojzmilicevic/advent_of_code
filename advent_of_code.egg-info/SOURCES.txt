@@ -1,7 +1,6 @@
 README.md
 linereader.py
 pyproject.toml
-setup.py
 advent_of_code.egg-info/PKG-INFO
 advent_of_code.egg-info/SOURCES.txt
 advent_of_code.egg-info/dependency_links.txt
@@ -16,13 +15,7 @@ cli/readme_generator.py
 common/__init__.py
 common/grid_printer.py
 common/parsing.py
+common/solution.py
 lib/__init__.py
 lib/point2d.py
 lib/point3d.py
-year2019/__init__.py
-year2019/computer.py
-year2019/util.py
-year2021/__init__.py
-year2021/7/7.py
-year2022/__init__.py
-year2025/__init__.py
