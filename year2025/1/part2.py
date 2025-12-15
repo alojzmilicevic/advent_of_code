@@ -2,7 +2,7 @@ import sys
 sys.path.insert(0, '../../')
 from linereader import read_file
 
-data = [x for x in read_file('1.input.txt')]
+data = [x for x in read_file('input.txt')]
 
 curIndex = 50
 count = 0

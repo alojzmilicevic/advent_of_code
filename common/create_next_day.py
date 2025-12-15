@@ -56,6 +56,21 @@ def create_day_folder(year, day, auto_download=True):
         year_path.mkdir(parents=True)
         print(f"Created year folder: year{year}")
     
+    # Create metadata.py if it doesn't exist
+    metadata_path = year_path / 'metadata.py'
+    if not metadata_path.exists():
+        metadata_template = '''from common.day import Day
+
+
+def get_metadata():
+    days = {
+    }
+
+    return days
+'''
+        metadata_path.write_text(metadata_template)
+        print(f"  Created metadata.py for year{year}")
+    
     # Create day folder
     if day_path.exists():
         print(f"Day {day} already exists!")
@@ -64,17 +79,15 @@ def create_day_folder(year, day, auto_download=True):
     day_path.mkdir(parents=True)
     print(f"Created day folder: {day}")
     
-    # Create a.py with template
-    a_py = day_path / 'a.py'
-    a_py.write_text('from linereader import read_file\n\ndata = [x for x in read_file(\'input.txt\')]\n\n')
-    print(f"  Created a.py")
-    
-    # Create b.py with template
-    b_py = day_path / 'b.py'
-    b_py.write_text('from linereader import read_file\n\ndata = [x for x in read_file(\'input.txt\')]\n\n')
-    print(f"  Created b.py")
-    
-    # Try to download input file if session is configured
+    # Create part1.py with template
+    part1_py = day_path / 'part1.py'
+    part1_py.write_text('from linereader import read_file\n\ndata = [x for x in read_file(\'input.txt\')]\n\n')
+    print(f"  Created part1.py")
+
+    # Create part2.py with template
+    part2_py = day_path / 'part2.py'
+    part2_py.write_text('from linereader import read_file\n\ndata = [x for x in read_file(\'input.txt\')]\n\n')
+    print(f"  Created part2.py")    # Try to download input file if session is configured
     input_file = day_path / 'input.txt'
     downloaded = False
     
@@ -111,8 +124,8 @@ def main():
         print("-" * 40)
         print(f"Successfully created year{year}/{day}/")
         print(f"\nFiles created:")
-        print(f"  - year{year}/{day}/a.py")
-        print(f"  - year{year}/{day}/b.py")
+        print(f"  - year{year}/{day}/part1.py")
+        print(f"  - year{year}/{day}/part2.py")
         print(f"  - year{year}/{day}/input.txt")
         print(f"  - year{year}/{day}/test.input.txt")
     else:

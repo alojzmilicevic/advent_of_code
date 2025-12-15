@@ -13,22 +13,30 @@ def create_url(idx, day, y):
 
 
 def get_files(day, y):
-    # Only include a.py and b.py, not helper files
-    raw_files = glob('year{year}/{day}/[ab].py'.format(day=day, year=y))
+    # Only include part1.py and part2.py, not helper files
+    raw_files = glob('year{year}/{day}/part[12].py'.format(day=day, year=y))
     a = [x.replace('year' + str(y), '').replace('\\', '/')[1:] for x in raw_files]
     print(a)
     return a
 
 
-def main():
-    """Generate README files for all years."""
-    year_folders = glob("*/")
-    years = sorted(
-        [int(y.rstrip('/\\').split('year')[1]) for y in year_folders if 'year' in y])
+def main(target_year=None):
+    """Generate README files for all years or a specific year."""
+    if target_year:
+        years = [target_year]
+    else:
+        year_folders = glob("*/")
+        years = sorted(
+            [int(y.rstrip('/\\').split('year')[1]) for y in year_folders if 'year' in y])
     
     print(f"Generating README files for years: {years}")
     
     for year in years:
+        # Skip years without metadata
+        metadata = get_metadata(year)
+        if metadata is None:
+            print(f"  Skipping year{year} (no metadata.py)")
+            continue
         f = open('./year{year}/README.md'.format(year=year), 'w', encoding="utf-8")
 
         # File header
@@ -47,6 +55,11 @@ def main():
             day_str = str(day_idx)
             files = get_files(day_str, year)
 
+            # Skip days without metadata entry
+            if day_idx not in metadata:
+                print(f"    Skipping day {day_idx} (no metadata entry)")
+                continue
+
             file_links = ""
             if len(files) == 1:
                 file_links = "[Part 1 & 2]({file})".format(file=files[0])
@@ -55,7 +68,7 @@ def main():
                     if i > 0:
                         file_links += " - "
                     file_links += "[Part {p}]({file})".format(file=files[i], p=i + 1)
-            write_table_row(day_str, create_url(day_str, get_metadata(year)[day_idx], year), file_links, f)
+            write_table_row(day_str, create_url(day_str, metadata[day_idx], year), file_links, f)
 
         f.close()
         print(f"  Generated year{year}/README.md")
