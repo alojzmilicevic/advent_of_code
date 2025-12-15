@@ -8,7 +8,7 @@ import subprocess
 from pathlib import Path
 
 # Add project root to path so we can import modules
-project_root = Path(__file__).parent
+project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 from cli.create_next_day import main as create_next_day
@@ -134,8 +134,8 @@ def handle_download(args):
         sys.exit(1)
     
     # Determine output path
-    project_root = Path(__file__).parent
-    day_path = project_root / f'year{year}' / str(day)
+    project_root = Path(__file__).parent.parent
+    day_path = project_root / 'years' / str(year) / str(day)
     
     # If day folder doesn't exist, create it with all template files
     if not day_path.exists():
@@ -241,14 +241,11 @@ def handle_run(args):
         sys.exit(1)
     
     # Find the file
-    script_path = project_root / f'year{year}' / str(day) / f'part{part}.py'
+    script_path = project_root / 'years' / str(year) / str(day) / f'part{part}.py'
     
     if not script_path.exists():
         print(f"Error: File not found: {script_path}")
         sys.exit(1)
-    
-    print(f"Running year {year}, day {day}, part {part}...")
-    print("-" * 40)
     
     # Run the script from its directory so relative imports work
     result = subprocess.run(

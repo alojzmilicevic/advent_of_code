@@ -4,10 +4,19 @@ from datetime import datetime
 
 
 # Template for new solution files
-SOLUTION_TEMPLATE = """from linereader import read_file
+SOLUTION_TEMPLATE = """from common.solution import Solution
 
-data = [x for x in read_file('input.txt')]
 
+class Day(Solution):
+    def part1(self):
+        # self.data is list of lines, self.raw_input is the raw string
+        return None
+    
+    def part2(self):
+        return None
+
+
+Day().solve()
 """
 
 
@@ -46,19 +55,24 @@ def add_metadata(year, day, session, interactive=True):
 def find_latest_year():
     """Find the latest year folder."""
     root = get_project_root()
-    year_folders = [d for d in root.iterdir() if d.is_dir() and d.name.startswith('year')]
+    years_dir = root / 'years'
+    
+    if not years_dir.exists():
+        return datetime.now().year
+    
+    year_folders = [d for d in years_dir.iterdir() if d.is_dir() and d.name.isdigit()]
     
     if not year_folders:
         return datetime.now().year
     
-    years = [int(d.name.replace('year', '')) for d in year_folders]
+    years = [int(d.name) for d in year_folders]
     return max(years)
 
 
 def find_next_day(year):
     """Find the next day that doesn't exist for the given year."""
     root = get_project_root()
-    year_path = root / f'year{year}'
+    year_path = root / 'years' / str(year)
     
     if not year_path.exists():
         return 1
@@ -92,7 +106,7 @@ def ensure_year_folder(year_path):
 def create_day_folder(year, day, auto_download=True):
     """Create the folder and files for a new day."""
     root = get_project_root()
-    year_path = root / f'year{year}'
+    year_path = root / 'years' / str(year)
     day_path = year_path / str(day)
     
     # Ensure year folder exists
@@ -149,7 +163,7 @@ def main():
     
     if create_day_folder(year, day):
         print("-" * 40)
-        print(f"Successfully created year{year}/{day}/")
+        print(f"Successfully created years/{year}/{day}/")
     else:
         sys.exit(1)
 

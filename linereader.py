@@ -33,7 +33,13 @@ def read_line(file_name, token):
         file_name = caller_path / file_name
     
     with open(file_name, 'r') as f:
-        return f.readline().split(token)
+        line = f.readline()
+
+        if token is None:
+            return line
+        if token == '':
+            return list(line)
+        return line.split(token)
 
 
 def read_parts(file_name, delim, split_instructions):

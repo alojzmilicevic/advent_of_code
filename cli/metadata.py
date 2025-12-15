@@ -84,7 +84,7 @@ def get_project_root():
 
 def get_metadata_path(year):
     """Get the path to the metadata JSON file for a year."""
-    return get_project_root() / f'year{year}' / 'metadata.json'
+    return get_project_root() / 'years' / str(year) / 'metadata.json'
 
 
 def load_metadata(year):

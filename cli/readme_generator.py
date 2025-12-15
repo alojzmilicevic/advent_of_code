@@ -1,33 +1,40 @@
 from glob import glob
+from pathlib import Path
 from cli.metadata import get_metadata
+
+# Get project root (parent of cli/)
+PROJECT_ROOT = Path(__file__).parent.parent
 
 
 def write_table_row(first: str, second: str, third: str, f):
     f.write('|' + first + '|' + second + '|' + third + '|\n')
 
 
-def create_url(idx, day, y):
+def create_url(idx, day_meta, y):
     url = 'https://adventofcode.com/'
+    # day_meta is a Day object with .name and .emoji attributes
     return "[{day}]({url}{year}/day/{index}) {emoji}" \
-        .format(day=day.name, year=y, index=str(idx), emoji=day.emoji, url=url)
+        .format(day=day_meta.name, year=y, index=str(idx), emoji=day_meta.emoji, url=url)
 
 
 def get_files(day, y):
     # Only include part1.py and part2.py, not helper files
-    raw_files = glob('year{year}/{day}/part[12].py'.format(day=day, year=y))
-    a = [x.replace('year' + str(y), '').replace('\\', '/')[1:] for x in raw_files]
-    print(a)
-    return a
+    pattern = PROJECT_ROOT / 'years' / str(y) / str(day) / 'part[12].py'
+    raw_files = glob(str(pattern))
+    # Return relative paths from year folder for links
+    a = [f'{day}/' + Path(x).name for x in raw_files]
+    return sorted(a)
 
 
 def main(target_year=None):
     """Generate README files for all years or a specific year."""
+    years_dir = PROJECT_ROOT / 'years'
+    
     if target_year:
         years = [target_year]
     else:
-        year_folders = glob("*/")
-        years = sorted(
-            [int(y.rstrip('/\\').split('year')[1]) for y in year_folders if 'year' in y])
+        year_folders = [d for d in years_dir.iterdir() if d.is_dir() and d.name.isdigit()]
+        years = sorted([int(d.name) for d in year_folders])
     
     print(f"Generating README files for years: {years}")
     
@@ -35,27 +42,29 @@ def main(target_year=None):
         # Skip years without metadata
         metadata = get_metadata(year)
         if metadata is None:
-            print(f"  Skipping year{year} (no metadata.py)")
+            print(f"  Skipping {year} (no metadata.json)")
             continue
-        f = open('./year{year}/README.md'.format(year=year), 'w', encoding="utf-8")
+        
+        readme_path = years_dir / str(year) / 'README.md'
+        f = open(readme_path, 'w', encoding="utf-8")
 
         # File header
-        f.write('# 🎄 🎅 Advent of code {year} 🎅 🎄\n'.format(year=year))
-        f.write('My Advent of Code (Season {year}) solutions written in Python 😀\n\n'.format(year=year))
+        f.write(f'# 🎄 🎅 Advent of code {year} 🎅 🎄\n')
+        f.write(f'My Advent of Code (Season {year}) solutions written in Python 😀\n\n')
 
         # Table Header
         write_table_row('#', 'Problem ☃', 'Solution ❄', f)
         write_table_row('---', '-------------', ':-------------:', f)
 
-        directories = glob("*year{year}/*/".format(year=year))
-        directories = sorted(
-            [int(y) for y in [x.replace('year' + str(year), '').strip('/\\') for x in directories] if y.isnumeric()])
+        year_path = years_dir / str(year)
+        day_folders = [d for d in year_path.iterdir() if d.is_dir() and d.name.isdigit()]
+        directories = sorted([int(d.name) for d in day_folders])
 
         for day_idx in directories:
             day_str = str(day_idx)
             files = get_files(day_str, year)
 
-            # Skip days without metadata entry
+            # Skip days without metadata entry (keys are integers)
             if day_idx not in metadata:
                 print(f"    Skipping day {day_idx} (no metadata entry)")
                 continue
@@ -71,7 +80,7 @@ def main(target_year=None):
             write_table_row(day_str, create_url(day_str, metadata[day_idx], year), file_links, f)
 
         f.close()
-        print(f"  Generated year{year}/README.md")
+        print(f"  Generated years/{year}/README.md")
     
     print("\nREADME generation complete!")
 
