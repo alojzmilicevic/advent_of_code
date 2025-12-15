@@ -72,8 +72,15 @@ Description:
 
 def handle_download(args):
     """Handle the download command."""
-    # Determine year and day based on arguments
-    extra_args = args[1:]  # Skip the -d/--download flag
+    # Find the index of -d or --download flag and get arguments after it
+    try:
+        if '-d' in args:
+            flag_idx = args.index('-d')
+        else:
+            flag_idx = args.index('--download')
+        extra_args = args[flag_idx + 1:]
+    except ValueError:
+        extra_args = []
     
     if len(extra_args) == 0:
         # No arguments: use latest year and next day
