@@ -14,7 +14,7 @@ def get_metadata():
         9: Day('Movie Theater', '🎬'),
         10: Day('Factory', '🏭'),
         11: Day('Reactor', '🔥'),
-        12: Day('*NOT OUT YET*', '❓'),
+        12: Day('Christmas Tree Farm', '🎄'),
     }
 
     return days

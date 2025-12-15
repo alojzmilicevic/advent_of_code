@@ -14,4 +14,4 @@ My Advent of Code (Season 2025) solutions written in Python 😀
 |9|[Movie Theater](https://adventofcode.com/2025/day/9) 🎬|[Part 1](9/part1.py) - [Part 2](9/part2.py)|
 |10|[Factory](https://adventofcode.com/2025/day/10) 🏭|[Part 1](10/part1.py) - [Part 2](10/part2.py)|
 |11|[Reactor](https://adventofcode.com/2025/day/11) 🔥|[Part 1 & 2](11/part1.py)|
-|12|[*NOT OUT YET*](https://adventofcode.com/2025/day/12) ❓|[Part 1 & 2](12/part1.py)|
+|12|[Christmas Tree Farm](https://adventofcode.com/2025/day/12) 🎄|[Part 1 & 2](12/part1.py)|
