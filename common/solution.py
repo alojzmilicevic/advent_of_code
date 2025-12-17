@@ -19,13 +19,16 @@ def get_day_metadata(year_dir: Path, day: str) -> dict | None:
 
 
 class Solution:   
-    def __init__(self, input_file: str | None = None):
+    def __init__(self, input_file: str | None = None, test: bool = False):
         # Get the directory of the calling script
         caller_file = inspect.stack()[1].filename
         caller_dir = Path(caller_file).parent
         
         if input_file is None:
-            input_file = caller_dir / "input.txt"
+            if test:
+                input_file = caller_dir / "test.input.txt"
+            else:
+                input_file = caller_dir / "input.txt"
         else:
             # If relative path, resolve from caller's directory
             input_file = Path(input_file)

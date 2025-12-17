@@ -9,3 +9,5 @@ My Advent of Code (Season 2015) solutions written in Python 😀
 |4|[The Ideal Stocking Stuffer](https://adventofcode.com/2015/day/4) 🧦|[Part 1 & 2](4/part1.py)|
 |5|[Doesn't He Have Intern-Elves For This?](https://adventofcode.com/2015/day/5) 🧝🏻|[Part 1 & 2](5/part1.py)|
 |6|[Probably a Fire Hazard](https://adventofcode.com/2015/day/6) 🔥|[Part 1 & 2](6/part1.py)|
+|7|[Some Assembly Required](https://adventofcode.com/2015/day/7) ⌨️|[Part 1 & 2](7/part1.py)|
+|8|[Matchsticks](https://adventofcode.com/2015/day/8) 🔱|[Part 1](8/part1.py) - [Part 2](8/part2.py)|
