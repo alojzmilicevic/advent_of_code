@@ -26,9 +26,9 @@ Advent of Code CLI Tool
 Usage: python aoc.py [OPTION] [ARGS]
 
 Options:
-  -n, --next        Create the next day's folder structure with template files
+  -n, --next        Create the next day's folder structure with template file
   -d, --download    Download input for a specific day (or today's day)
-  -run              Run a specific day's solution (part1 or part2)
+  -run              Run a specific day's solution
   -s, --setup       Setup your Advent of Code session cookie
   -r, --readme      Generate README files for all years based on metadata
   -h, --help        Show this help message and exit
@@ -54,7 +54,7 @@ Examples:
 Description:
   -n, --next
       Automatically detects the latest year and creates the next day's folder
-      with a.py, b.py, input.txt, and test.input.txt files.
+      with part1.py, input.txt, and test.input.txt files.
 
   -d, --download [year] [day]
       Download input from adventofcode.com for the specified day.
