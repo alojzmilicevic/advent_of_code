@@ -1,11 +1,8 @@
 from common.solution import Solution
 import re
 
-p1_pattern = re.compile(
-    r"^(?!.*(?:ab|cd|pq|xy))"   
-    r"(?=(?:.*[aeiou]){3,})"   
-    r".*(.)\1"                 
-)
+p1_pattern = re.compile(r"^(?!.*(?:ab|cd|pq|xy))" r"(?=(?:.*[aeiou]){3,})" r".*(.)\1")
+
 
 class Day(Solution):
     def is_nice(self, line):
@@ -19,7 +16,7 @@ class Day(Solution):
                     has_repeat_with_gap = True
 
             if i + 1 < len(line):
-                pair = line[i:i + 2]
+                pair = line[i : i + 2]
 
                 if pair not in pairs:
                     pairs[pair] = i
@@ -34,20 +31,20 @@ class Day(Solution):
 
     def part1(self):
         count = 0
-        
+
         for line in self.data:
             if bool(p1_pattern.search(line)):
                 count += 1
         return count
-        
+
     def part2(self):
         count = 0
-        
+
         for line in self.data:
-            if(self.is_nice(line)):
-                count +=1
-        
+            if self.is_nice(line):
+                count += 1
+
         return count
 
 
-Day("input.txt").solve()
+Day().solve()

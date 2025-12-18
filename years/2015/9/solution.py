@@ -47,4 +47,4 @@ class Day(Solution):
         return max_dist
 
 
-Day(test=False).solve()
+Day().solve()

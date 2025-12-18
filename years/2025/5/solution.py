@@ -1,5 +1,4 @@
 from common.solution import Solution
-import sys
 
 
 class Day(Solution):

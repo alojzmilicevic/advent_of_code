@@ -1,5 +1,4 @@
 from common.solution import Solution
-import sys
 
 
 class Day(Solution):
@@ -137,4 +136,4 @@ class Day(Solution):
         return grand_total
 
 
-Day(test="test" in sys.argv).solve()
+Day().solve()

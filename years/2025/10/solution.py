@@ -1,7 +1,6 @@
 from common.solution import Solution
 from common.parsing import extract_brackets, extract_parens, extract_braces
 from itertools import combinations
-import sys
 
 
 class Day(Solution):
@@ -157,4 +156,4 @@ class Day(Solution):
         return total
 
 
-Day(test="test" in sys.argv).solve()
+Day().solve()

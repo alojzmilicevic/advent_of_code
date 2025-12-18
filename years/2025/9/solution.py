@@ -1,6 +1,5 @@
 from common.solution import Solution
 from lib.point2d import Point2D
-import sys
 
 
 class Day(Solution):
@@ -98,4 +97,4 @@ class Day(Solution):
         return ans
 
 
-Day(test="test" in sys.argv).solve()
+Day().solve()
