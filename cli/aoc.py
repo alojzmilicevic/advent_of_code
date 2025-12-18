@@ -28,8 +28,7 @@ Usage: python aoc.py [OPTION] [ARGS]
 Options:
   -n, --next        Create the next day's folder structure with template files
   -d, --download    Download input for a specific day (or today's day)
-  -run              Run a specific day's solution (part1 or part2)
-  -run-year         Run all solutions for a given year
+  -run              Run solution(s) for a specific year/day/part
   -s, --setup       Setup your Advent of Code session cookie
   -r, --readme      Generate README files for all years based on metadata
   -h, --help        Show this help message and exit
@@ -41,11 +40,11 @@ Examples:
   python aoc.py -d 5                  # Download input for day 5 (latest year)
   python aoc.py -d 2024 5             # Download input for year 2024, day 5
   python aoc.py --download 5          # Same as -d 5
-  python aoc.py -run 5                # Run day 5 part1 (latest year)
+  python aoc.py -run 2025             # Run ALL days for year 2025
+  python aoc.py -run 5                # Run day 5 (latest year, both parts)
   python aoc.py -run 5 2              # Run day 5 part2 (latest year)
-  python aoc.py -run 2024 5           # Run year 2024, day 5, part1
+  python aoc.py -run 2024 5           # Run year 2024, day 5 (both parts)
   python aoc.py -run 2024 5 2         # Run year 2024, day 5, part2
-  python aoc.py -run-year 2025        # Run all days for year 2025
   python aoc.py -s                    # Setup session cookie
   python aoc.py --setup               # Same as above
   python aoc.py -r                    # Generate all README files
@@ -56,7 +55,7 @@ Examples:
 Description:
   -n, --next
       Automatically detects the latest year and creates the next day's folder
-      with a.py, b.py, input.txt, and test.input.txt files.
+      with solution.py, input.txt, and test.input.txt files.
 
   -d, --download [year] [day]
       Download input from adventofcode.com for the specified day.
@@ -74,17 +73,14 @@ Description:
       files, creating a table of problems and solutions.
       If year is provided, only generates README for that year.
 
-  -run [year] <day> [part]
-      Run a specific day's solution.
-      If one argument: runs that day's part1 in the latest year
-      If two arguments (day, part): runs that day and part in the latest year
-      If two arguments (year, day): runs that year and day's part1
+  -run <year|day> [day] [part]
+      Run solution(s) for a specific year/day/part.
+      If one argument > 25: runs ALL days for that year (e.g., -run 2021)
+      If one argument <= 25: runs that day in the latest year (e.g., -run 5)
+      If two arguments (year, day): runs both parts for that year/day
+      If two arguments (day, part): runs that part for latest year
       If three arguments: runs specified year, day, and part
-      Part defaults to 1 if not specified.
-
-  -run-year <year>
-      Run all available solutions for a specific year.
-      Runs solution.py for each day found in the year directory.
+      Part defaults to running both parts if not specified.
 
   -h, --help
       Displays this help message with all available commands.
@@ -188,23 +184,8 @@ def handle_readme(args):
         generate_readme()
 
 
-def handle_run_year(args):
-    """Handle running all solutions for a year."""
-    try:
-        flag_idx = args.index('-run-year')
-        extra_args = args[flag_idx + 1:]
-    except ValueError:
-        extra_args = []
-    
-    if len(extra_args) == 0:
-        year = find_latest_year()
-    else:
-        try:
-            year = int(extra_args[0])
-        except ValueError:
-            print(f"Error: Invalid year '{extra_args[0]}'")
-            sys.exit(1)
-    
+def run_all_days_for_year(year):
+    """Run all solutions for a given year."""
     year_path = project_root / 'years' / str(year)
     
     if not year_path.exists():
@@ -266,20 +247,30 @@ def handle_run(args):
         extra_args = []
     
     if len(extra_args) == 0:
-        print("Error: Please specify at least a day number")
-        print("Usage: aoc -run [year] <day> [part]")
+        print("Error: Please specify at least a year or day number")
+        print("Usage: aoc -run <year> [day] [part]")
         sys.exit(1)
     
     # Parse arguments
     year = find_latest_year()
+    day = None
     part = 1
     
     if len(extra_args) == 1:
-        # Just day: -run 5
+        # Could be just day (-run 5) or just year (-run 2021)
         try:
-            day = int(extra_args[0])
+            value = int(extra_args[0])
+            # If value > 25, treat as year and run all days
+            if value > 25:
+                year = value
+                # Run all days for this year
+                run_all_days_for_year(year)
+                sys.exit(0)
+            else:
+                # Just a day number
+                day = value
         except ValueError:
-            print(f"Error: Invalid day number '{extra_args[0]}'")
+            print(f"Error: Invalid number '{extra_args[0]}'")
             sys.exit(1)
     elif len(extra_args) == 2:
         # Could be (day, part) or (year, day)
@@ -352,8 +343,6 @@ def main():
         setup_session_cookie()
     elif '-d' in sys.argv or '--download' in sys.argv:
         handle_download(sys.argv)
-    elif '-run-year' in sys.argv:
-        handle_run_year(sys.argv)
     elif '-run' in sys.argv:
         handle_run(sys.argv)
     else:
