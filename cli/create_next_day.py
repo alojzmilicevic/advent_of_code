@@ -11,6 +11,9 @@ class Day(Solution):
     def part1(self):
         # self.data is list of lines, self.raw_input is the raw string
         return None
+    
+    def part2(self):
+        return None
 
 
 Day().solve()
@@ -118,9 +121,10 @@ def create_day_folder(year, day, auto_download=True):
     day_path.mkdir(parents=True)
     print(f"Created day folder: {day}")
     
-    # Create solution file
-    (day_path / 'part1.py').write_text(SOLUTION_TEMPLATE)
-    print(f"  Created part1.py")
+    # Create solution files
+    for filename in ['part1.py', 'part2.py']:
+        (day_path / filename).write_text(SOLUTION_TEMPLATE)
+        print(f"  Created {filename}")
     
     # Download or create input file
     input_file = day_path / 'input.txt'

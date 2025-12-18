@@ -1,30 +1,49 @@
-import sys
-sys.path.insert(0, '../../')
-from linereader import read_file
+from common.solution import Solution
 
-from itertools import combinations
 
-data = [x for x in read_file('input.txt')]
+class Day(Solution):
+    NUM_BATTERIES = 12
 
-NUM_BATTERIES = 12
+    def parse_input(self, raw: str):
+        return [x for x in raw.strip().split("\n")]
 
-total = 0
+    def max_subsequence(self, digits, n):
+        """Find the maximum subsequence of length n"""
+        digits = list(map(int, digits))
+        length = len(digits)
+        result = []
+        start = 0
 
-for row in data:
-    max_joltage = 0
-    
-    # Check all combinations of NUM_BATTERIES indices
-    for indices in combinations(range(len(row)), NUM_BATTERIES):
-        # Form the number from selected batteries
-        joltage_str = ''.join(row[i] for i in indices)
-        joltage = int(joltage_str)
-        if joltage > max_joltage:
-            max_joltage = joltage
-    
-    print(f"{row}: {max_joltage}")
-    total += max_joltage
+        for i in range(n):
+            max_index = length - (n - len(result))
 
-print(f"\nTotal output joltage: {total}")
-        
+            best_digit = -1
+            best_pos = start
+            for pos in range(start, max_index + 1):
+                if digits[pos] > best_digit:
+                    best_digit = digits[pos]
+                    best_pos = pos
+                if best_digit == 9:
+                    break
 
-    
+            result.append(str(best_digit))
+            start = best_pos + 1
+
+        return "".join(result)
+
+    def part1(self):
+        count = 0
+        for line in self.data:
+            count += int(self.max_subsequence(line, 2))
+
+        return count
+
+    def part2(self):
+        count = 0
+        for line in self.data:
+            count += int(self.max_subsequence(line, self.NUM_BATTERIES))
+
+        return count
+
+
+Day().solve()

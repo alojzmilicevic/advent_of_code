@@ -26,9 +26,10 @@ Advent of Code CLI Tool
 Usage: python aoc.py [OPTION] [ARGS]
 
 Options:
-  -n, --next        Create the next day's folder structure with template file
+  -n, --next        Create the next day's folder structure with template files
   -d, --download    Download input for a specific day (or today's day)
-  -run              Run a specific day's solution
+  -run              Run a specific day's solution (part1 or part2)
+  -run-year         Run all solutions for a given year
   -s, --setup       Setup your Advent of Code session cookie
   -r, --readme      Generate README files for all years based on metadata
   -h, --help        Show this help message and exit
@@ -44,6 +45,7 @@ Examples:
   python aoc.py -run 5 2              # Run day 5 part2 (latest year)
   python aoc.py -run 2024 5           # Run year 2024, day 5, part1
   python aoc.py -run 2024 5 2         # Run year 2024, day 5, part2
+  python aoc.py -run-year 2025        # Run all days for year 2025
   python aoc.py -s                    # Setup session cookie
   python aoc.py --setup               # Same as above
   python aoc.py -r                    # Generate all README files
@@ -54,7 +56,7 @@ Examples:
 Description:
   -n, --next
       Automatically detects the latest year and creates the next day's folder
-      with part1.py, input.txt, and test.input.txt files.
+      with a.py, b.py, input.txt, and test.input.txt files.
 
   -d, --download [year] [day]
       Download input from adventofcode.com for the specified day.
@@ -79,6 +81,10 @@ Description:
       If two arguments (year, day): runs that year and day's part1
       If three arguments: runs specified year, day, and part
       Part defaults to 1 if not specified.
+
+  -run-year <year>
+      Run all available solutions for a specific year.
+      Runs part1.py for each day found in the year directory.
 
   -h, --help
       Displays this help message with all available commands.
@@ -182,6 +188,71 @@ def handle_readme(args):
         generate_readme()
 
 
+def handle_run_year(args):
+    """Handle running all solutions for a year."""
+    try:
+        flag_idx = args.index('-run-year')
+        extra_args = args[flag_idx + 1:]
+    except ValueError:
+        extra_args = []
+    
+    if len(extra_args) == 0:
+        year = find_latest_year()
+    else:
+        try:
+            year = int(extra_args[0])
+        except ValueError:
+            print(f"Error: Invalid year '{extra_args[0]}'")
+            sys.exit(1)
+    
+    year_path = project_root / 'years' / str(year)
+    
+    if not year_path.exists():
+        print(f"Error: Year {year} directory not found")
+        sys.exit(1)
+    
+    print(f"\n{'='*60}")
+    print(f"Running all solutions for year {year}")
+    print(f"{'='*60}\n")
+    
+    # Get all day directories (numeric folders)
+    day_dirs = sorted([d for d in year_path.iterdir() if d.is_dir() and d.name.isdigit()], 
+                      key=lambda x: int(x.name))
+    
+    if not day_dirs:
+        print(f"No day directories found in year {year}")
+        sys.exit(0)
+    
+    total_days = len(day_dirs)
+    success_count = 0
+    
+    for day_dir in day_dirs:
+        day = day_dir.name
+        script_path = day_dir / 'part1.py'
+        
+        if not script_path.exists():
+            print(f"Day {day:>2}: SKIP (part1.py not found)")
+            continue
+        
+        print(f"\nDay {day:>2}:")
+        print("-" * 60)
+        
+        result = subprocess.run(
+            [sys.executable, script_path.name],
+            cwd=script_path.parent,
+            capture_output=False
+        )
+        
+        if result.returncode == 0:
+            success_count += 1
+        else:
+            print(f"ERROR: Day {day} failed with return code {result.returncode}")
+    
+    print(f"\n{'='*60}")
+    print(f"Completed: {success_count}/{total_days} days ran successfully")
+    print(f"{'='*60}\n")
+
+
 def handle_run(args):
     """Handle the run command."""
     try:
@@ -273,6 +344,8 @@ def main():
         setup_session_cookie()
     elif '-d' in sys.argv or '--download' in sys.argv:
         handle_download(sys.argv)
+    elif '-run-year' in sys.argv:
+        handle_run_year(sys.argv)
     elif '-run' in sys.argv:
         handle_run(sys.argv)
     else:

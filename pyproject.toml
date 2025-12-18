@@ -10,6 +10,10 @@ requires-python = ">=3.8"
 authors = [
     {name = "Alojz Milicevic"}
 ]
+dependencies = [
+    "scipy>=1.10.0",
+    "numpy>=1.25.0",
+]
 
 [project.scripts]
 aoc = "cli.aoc:main"

@@ -1,21 +1,49 @@
-import sys
-sys.path.insert(0, '../../')
-from linereader import read_file
+from common.solution import Solution
 
-data = [x for x in read_file('input.txt')]
 
-curIndex = 50
-count = 0
-for item in data:
-    direction = item[0]
-    steps = int(item[1:])
+class Day(Solution):
+    def parse_input(self, raw: str):
+        return [x for x in raw.strip().split("\n")]
 
-    if direction == 'L':
-        curIndex = (curIndex - steps) % 100
-    elif direction == 'R':
-        curIndex = (curIndex + steps) % 100
+    def part1(self):
+        cur_index = 50
+        count = 0
+        for item in self.data:
+            direction = item[0]
+            steps = int(item[1:])
 
-    if curIndex == 0:
-        count += 1
+            if direction == "L":
+                cur_index = (cur_index - steps) % 100
+            elif direction == "R":
+                cur_index = (cur_index + steps) % 100
 
-print(count)
+            if cur_index == 0:
+                count += 1
+
+        return count
+
+    def part2(self):
+        cur_index = 50
+        count = 0
+
+        for item in self.data:
+            direction = item[0]
+            steps = int(item[1:])
+
+            if direction == "L":
+                if cur_index == 0:
+                    count += steps // 100
+                elif steps >= cur_index:
+                    count += 1 + (steps - cur_index) // 100
+                cur_index = (cur_index - steps) % 100
+            elif direction == "R":
+                if cur_index == 0:
+                    count += steps // 100
+                elif steps >= 100 - cur_index:
+                    count += 1 + (steps - (100 - cur_index)) // 100
+                cur_index = (cur_index + steps) % 100
+
+        return count
+
+
+Day().solve()

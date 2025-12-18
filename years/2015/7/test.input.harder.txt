@@ -1,6 +1,0 @@
-x AND y -> d
-d OR e -> a
-x OR y -> e
-456 -> y
-123 -> x
-
