@@ -84,7 +84,7 @@ Description:
 
   -run-year <year>
       Run all available solutions for a specific year.
-      Runs part1.py for each day found in the year directory.
+      Runs solution.py for each day found in the year directory.
 
   -h, --help
       Displays this help message with all available commands.
@@ -228,10 +228,14 @@ def handle_run_year(args):
     
     for day_dir in day_dirs:
         day = day_dir.name
-        script_path = day_dir / 'part1.py'
+        script_path = day_dir / 'solution.py'
         
         if not script_path.exists():
-            print(f"Day {day:>2}: SKIP (part1.py not found)")
+            # Fallback to old structure
+            script_path = day_dir / 'part1.py'
+        
+        if not script_path.exists():
+            print(f"Day {day:>2}: SKIP (solution.py not found)")
             continue
         
         print(f"\nDay {day:>2}:")
@@ -311,8 +315,12 @@ def handle_run(args):
         print(f"Error: Part must be 1 or 2, got {part}")
         sys.exit(1)
     
-    # Find the file
-    script_path = project_root / 'years' / str(year) / str(day) / f'part{part}.py'
+    # Find the file (look for solution.py first, fallback to part{part}.py for older structure)
+    script_path = project_root / 'years' / str(year) / str(day) / 'solution.py'
+    
+    if not script_path.exists():
+        # Fallback to old structure
+        script_path = project_root / 'years' / str(year) / str(day) / f'part{part}.py'
     
     if not script_path.exists():
         print(f"Error: File not found: {script_path}")

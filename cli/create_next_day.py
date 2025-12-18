@@ -121,10 +121,10 @@ def create_day_folder(year, day, auto_download=True):
     day_path.mkdir(parents=True)
     print(f"Created day folder: {day}")
     
-    # Create solution files
-    for filename in ['part1.py', 'part2.py']:
-        (day_path / filename).write_text(SOLUTION_TEMPLATE)
-        print(f"  Created {filename}")
+    # Create solution file
+    solution_file = day_path / 'solution.py'
+    solution_file.write_text(SOLUTION_TEMPLATE)
+    print(f"  Created solution.py")
     
     # Download or create input file
     input_file = day_path / 'input.txt'
