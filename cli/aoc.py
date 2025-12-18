@@ -15,6 +15,7 @@ from cli.create_next_day import main as create_next_day
 from cli.aoc_downloader import download_input, setup_session_cookie, get_session_cookie
 from cli.create_next_day import find_latest_year, find_next_day, create_day_folder
 from cli.readme_generator import main as generate_readme
+from cli.constants import SOLUTION_FILENAME, OLD_PART1_FILENAME, OLD_PART2_FILENAME
 
 
 def show_help():
@@ -92,14 +93,14 @@ def handle_download(args):
     """Handle the download command."""
     # Find the index of -d or --download flag and get arguments after it
     try:
-        if '-d' in args:
-            flag_idx = args.index('-d')
+        if "-d" in args:
+            flag_idx = args.index("-d")
         else:
-            flag_idx = args.index('--download')
-        extra_args = args[flag_idx + 1:]
+            flag_idx = args.index("--download")
+        extra_args = args[flag_idx + 1 :]
     except ValueError:
         extra_args = []
-    
+
     if len(extra_args) == 0:
         # No arguments: use latest year and next day
         year = find_latest_year()
@@ -123,22 +124,22 @@ def handle_download(args):
             print(f"Error: Invalid year or day number")
             sys.exit(1)
         print(f"Downloading input for year {year}, day {day}...")
-    
+
     # Validate day
     if not 1 <= day <= 25:
         print(f"Error: Day must be between 1 and 25, got {day}")
         sys.exit(1)
-    
+
     # Check if session cookie exists
     if not get_session_cookie():
         print("\nNo session cookie found!")
         print("Run 'python aoc.py --setup' to configure your session cookie.")
         sys.exit(1)
-    
+
     # Determine output path
     project_root = Path(__file__).parent.parent
-    day_path = project_root / 'years' / str(year) / str(day)
-    
+    day_path = project_root / "years" / str(year) / str(day)
+
     # If day folder doesn't exist, create it with all template files
     if not day_path.exists():
         print(f"Day folder doesn't exist, creating with templates...")
@@ -149,7 +150,7 @@ def handle_download(args):
             sys.exit(1)
     else:
         # Day exists, just download input if it doesn't exist or is empty
-        input_path = day_path / 'input.txt'
+        input_path = day_path / "input.txt"
         if input_path.exists() and input_path.stat().st_size > 0:
             print(f"Input file already exists at {input_path}")
             print("Skipping download to avoid overwriting.")
@@ -164,14 +165,14 @@ def handle_download(args):
 def handle_readme(args):
     """Handle the readme command."""
     try:
-        if '-r' in args:
-            flag_idx = args.index('-r')
+        if "-r" in args:
+            flag_idx = args.index("-r")
         else:
-            flag_idx = args.index('--readme')
-        extra_args = args[flag_idx + 1:]
+            flag_idx = args.index("--readme")
+        extra_args = args[flag_idx + 1 :]
     except ValueError:
         extra_args = []
-    
+
     if len(extra_args) >= 1:
         try:
             year = int(extra_args[0])
@@ -186,53 +187,55 @@ def handle_readme(args):
 
 def run_all_days_for_year(year):
     """Run all solutions for a given year."""
-    year_path = project_root / 'years' / str(year)
-    
+    year_path = project_root / "years" / str(year)
+
     if not year_path.exists():
         print(f"Error: Year {year} directory not found")
         sys.exit(1)
-    
+
     print(f"\n{'='*60}")
     print(f"Running all solutions for year {year}")
     print(f"{'='*60}\n")
-    
+
     # Get all day directories (numeric folders)
-    day_dirs = sorted([d for d in year_path.iterdir() if d.is_dir() and d.name.isdigit()], 
-                      key=lambda x: int(x.name))
-    
+    day_dirs = sorted(
+        [d for d in year_path.iterdir() if d.is_dir() and d.name.isdigit()],
+        key=lambda x: int(x.name),
+    )
+
     if not day_dirs:
         print(f"No day directories found in year {year}")
         sys.exit(0)
-    
+
     total_days = len(day_dirs)
     success_count = 0
-    
+
     for day_dir in day_dirs:
         day = day_dir.name
-        script_path = day_dir / 'solution.py'
-        
+        script_path = day_dir / SOLUTION_FILENAME
+
         if not script_path.exists():
             # Fallback to old structure
-            script_path = day_dir / 'part1.py'
-        
+            script_path = day_dir / OLD_PART1_FILENAME
+
         if not script_path.exists():
-            print(f"Day {day:>2}: SKIP (solution.py not found)")
+            print(f"Day {day:>2}: SKIP ({SOLUTION_FILENAME} not found)")
             continue
-        
+
         print(f"\nDay {day:>2}:")
         print("-" * 60)
-        
+
         result = subprocess.run(
             [sys.executable, script_path.name],
             cwd=script_path.parent,
-            capture_output=False
+            capture_output=False,
         )
-        
+
         if result.returncode == 0:
             success_count += 1
         else:
             print(f"ERROR: Day {day} failed with return code {result.returncode}")
-    
+
     print(f"\n{'='*60}")
     print(f"Completed: {success_count}/{total_days} days ran successfully")
     print(f"{'='*60}\n")
@@ -241,21 +244,21 @@ def run_all_days_for_year(year):
 def handle_run(args):
     """Handle the run command."""
     try:
-        flag_idx = args.index('-run')
-        extra_args = args[flag_idx + 1:]
+        flag_idx = args.index("-run")
+        extra_args = args[flag_idx + 1 :]
     except ValueError:
         extra_args = []
-    
+
     if len(extra_args) == 0:
         print("Error: Please specify at least a year or day number")
         print("Usage: aoc -run <year> [day] [part]")
         sys.exit(1)
-    
+
     # Parse arguments
     year = find_latest_year()
     day = None
     part = 1
-    
+
     if len(extra_args) == 1:
         # Could be just day (-run 5) or just year (-run 2021)
         try:
@@ -277,7 +280,7 @@ def handle_run(args):
         try:
             first = int(extra_args[0])
             second = int(extra_args[1])
-            
+
             # If first arg > 25, it's probably a year
             if first > 25:
                 year = first
@@ -297,7 +300,7 @@ def handle_run(args):
         except ValueError:
             print(f"Error: Invalid arguments")
             sys.exit(1)
-    
+
     # Validate
     if not 1 <= day <= 25:
         print(f"Error: Day must be between 1 and 25, got {day}")
@@ -305,23 +308,20 @@ def handle_run(args):
     if part not in [1, 2]:
         print(f"Error: Part must be 1 or 2, got {part}")
         sys.exit(1)
-    
+
     # Find the file (look for solution.py first, fallback to part{part}.py for older structure)
-    script_path = project_root / 'years' / str(year) / str(day) / 'solution.py'
-    
+    script_path = project_root / "years" / str(year) / str(day) / SOLUTION_FILENAME
+
     if not script_path.exists():
         # Fallback to old structure
-        script_path = project_root / 'years' / str(year) / str(day) / f'part{part}.py'
-    
+        script_path = project_root / "years" / str(year) / str(day) / f"part{part}.py"
+
     if not script_path.exists():
         print(f"Error: File not found: {script_path}")
         sys.exit(1)
-    
+
     # Run the script from its directory so relative imports work
-    result = subprocess.run(
-        [sys.executable, script_path.name],
-        cwd=script_path.parent
-    )
+    result = subprocess.run([sys.executable, script_path.name], cwd=script_path.parent)
     sys.exit(result.returncode)
 
 
@@ -331,25 +331,24 @@ def main():
     if len(sys.argv) == 1:
         show_help()
         sys.exit(0)
-    
+
     # Check for flags
-    if '-h' in sys.argv or '--help' in sys.argv:
+    if "-h" in sys.argv or "--help" in sys.argv:
         show_help()
-    elif '-n' in sys.argv or '--next' in sys.argv:
+    elif "-n" in sys.argv or "--next" in sys.argv:
         create_next_day()
-    elif '-r' in sys.argv or '--readme' in sys.argv:
+    elif "-r" in sys.argv or "--readme" in sys.argv:
         handle_readme(sys.argv)
-    elif '-s' in sys.argv or '--setup' in sys.argv:
+    elif "-s" in sys.argv or "--setup" in sys.argv:
         setup_session_cookie()
-    elif '-d' in sys.argv or '--download' in sys.argv:
+    elif "-d" in sys.argv or "--download" in sys.argv:
         handle_download(sys.argv)
-    elif '-run' in sys.argv:
+    elif "-run" in sys.argv:
         handle_run(sys.argv)
     else:
         print("Error: Unknown option. Use -h or --help for usage information.")
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-
