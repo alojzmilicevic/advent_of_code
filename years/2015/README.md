@@ -16,3 +16,4 @@ My Advent of Code (Season 2015) solutions written in Python 😀
 |11|[Corporate Policy](https://adventofcode.com/2015/day/11) 🖨️|[Part 1 & 2](11/solution.py)|
 |12|[JSAbacusFramework.io](https://adventofcode.com/2015/day/12) 🦠|[Part 1 & 2](12/solution.py)|
 |13|[Knights of the Dinner Table](https://adventofcode.com/2015/day/13) 🏇|[Part 1 & 2](13/solution.py)|
+|14|[Reindeer Olympics](https://adventofcode.com/2015/day/14) 🦌|[Part 1 & 2](14/solution.py)|
